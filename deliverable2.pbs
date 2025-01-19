@@ -1,0 +1,134 @@
+#!/bin/bash
+# Job name
+#PBS -N deliverable2
+# Output files
+#PBS -o ./deliverable2.o
+#PBS -e ./deliverable2.e
+# Queue name
+#PBS -q short_cpuQ
+# Set the maximum wall time
+#PBS -l walltime=0:10:00
+# Number of nodes, cpus, mpi processors and amount of memory
+#PBS -l select=1:ncpus=16:mpiprocs=16:mem=1gb
+
+# Modules for C
+module load gcc91
+module load mpich-3.2.1--gcc-9.1.0
+gcc() {
+    gcc-9.1.0 "$@"
+}
+gcc --version
+# Select the working directory
+cd /home/nicolo.belle/test
+
+echo "------------------------------- START deliverable2.pbs -------------------------------"
+
+# File
+FILEC="deliverable2.c"
+
+# Check if file exists
+if [ -f "$FILEC" ]; then
+    echo "deliverable2.c founded.."
+    # Remove compiled file created during previous runs
+    FILE="deliverable2.out"
+    if [ -f "$FILE" ]; then
+        echo "deliverable2.out of previous execution removed.."
+        rm deliverable2.out
+    fi
+
+    # Remove csv file created during previous runs
+    FILESICSV="deliverable2_seq.csv"
+    if [ -f "$FILESICSV" ]; then
+        echo "deliverable2_seq.csv of previous execution removed.."
+        rm deliverable2_seq.csv
+    fi
+
+    # Remove csv file created during previous runs
+    FILECSV="deliverable2_mpi.csv"
+    if [ -f "$FILECSV" ]; then
+        echo "deliverable2_mpi.csv of previous execution removed.."
+        rm deliverable2_mpi.csv
+    fi
+
+    # Compile code
+    mpicc deliverable2.c -o deliverable2.out
+
+    echo "deliverable2.c compiled.."
+        
+    if [ -f "$FILE" ]; then
+        echo "deliverable2.out created.."
+        echo "Execution started.."
+        echo ""
+        nProcesses=1
+        echo "=============================== NUMBER OF PROCESSES = $nProcesses =============================="
+        # Run code
+        mpirun -np $nProcesses ./deliverable2.out 16
+        mpirun -np $nProcesses ./deliverable2.out 32
+        mpirun -np $nProcesses ./deliverable2.out 64
+        mpirun -np $nProcesses ./deliverable2.out 128
+        mpirun -np $nProcesses ./deliverable2.out 256
+        mpirun -np $nProcesses ./deliverable2.out 512
+        mpirun -np $nProcesses ./deliverable2.out 1024
+        mpirun -np $nProcesses ./deliverable2.out 2048
+        mpirun -np $nProcesses ./deliverable2.out 4096
+        nProcesses=2
+        echo "=============================== NUMBER OF PROCESSES = $nProcesses =============================="
+        # Run code
+        mpirun -np $nProcesses ./deliverable2.out 16
+        mpirun -np $nProcesses ./deliverable2.out 32
+        mpirun -np $nProcesses ./deliverable2.out 64
+        mpirun -np $nProcesses ./deliverable2.out 128
+        mpirun -np $nProcesses ./deliverable2.out 256
+        mpirun -np $nProcesses ./deliverable2.out 512
+        mpirun -np $nProcesses ./deliverable2.out 1024
+        mpirun -np $nProcesses ./deliverable2.out 2048
+        mpirun -np $nProcesses ./deliverable2.out 4096
+        nProcesses=4
+        echo "=============================== NUMBER OF PROCESSES = $nProcesses =============================="
+        # Run code
+        mpirun -np $nProcesses ./deliverable2.out 16
+        mpirun -np $nProcesses ./deliverable2.out 32
+        mpirun -np $nProcesses ./deliverable2.out 64
+        mpirun -np $nProcesses ./deliverable2.out 128
+        mpirun -np $nProcesses ./deliverable2.out 256
+        mpirun -np $nProcesses ./deliverable2.out 512
+        mpirun -np $nProcesses ./deliverable2.out 1024
+        mpirun -np $nProcesses ./deliverable2.out 2048
+        mpirun -np $nProcesses ./deliverable2.out 4096
+        nProcesses=8
+        echo "=============================== NUMBER OF PROCESSES = $nProcesses =============================="
+        # Run code
+        mpirun -np $nProcesses ./deliverable2.out 16
+        mpirun -np $nProcesses ./deliverable2.out 32
+        mpirun -np $nProcesses ./deliverable2.out 64
+        mpirun -np $nProcesses ./deliverable2.out 128
+        mpirun -np $nProcesses ./deliverable2.out 256
+        mpirun -np $nProcesses ./deliverable2.out 512
+        mpirun -np $nProcesses ./deliverable2.out 1024
+        mpirun -np $nProcesses ./deliverable2.out 2048
+        mpirun -np $nProcesses ./deliverable2.out 4096
+        nProcesses=16
+        echo "=============================== NUMBER OF PROCESSES = $nProcesses =============================="
+        # Run code
+        mpirun -np $nProcesses ./deliverable2.out 16
+        mpirun -np $nProcesses ./deliverable2.out 32
+        mpirun -np $nProcesses ./deliverable2.out 64
+        mpirun -np $nProcesses ./deliverable2.out 128
+        mpirun -np $nProcesses ./deliverable2.out 256
+        mpirun -np $nProcesses ./deliverable2.out 512
+        mpirun -np $nProcesses ./deliverable2.out 1024
+        mpirun -np $nProcesses ./deliverable2.out 2048
+        mpirun -np $nProcesses ./deliverable2.out 4096
+        echo ""
+        echo "Execution ended.."
+    else
+        echo ""
+        echo "executable file 'deliverable2.out' not created, check file 'deliverable2.e' for the error.."
+    fi
+else
+    echo ""
+    echo "ERROR: file deliverable2.c does not exist"
+fi
+
+
+echo "-------------------------------  END deliverable2.pbs  -------------------------------"
